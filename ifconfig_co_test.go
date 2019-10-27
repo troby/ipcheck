@@ -10,5 +10,5 @@ func TestIfconfigCoMyIP(t *testing.T) {
 	if err != nil {
 		t.Error(err.Error())
 	}
-	log.Println("ifconfig.co: " + ip)
+	log.Print("ifconfig.co: " + ip)
 }

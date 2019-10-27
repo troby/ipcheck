@@ -1,6 +1,7 @@
 package ipcheck
 
 import (
+	"fmt"
 	"log"
 	"sync"
 	"time"
@@ -35,6 +36,7 @@ func (i *IPCheck) Wait() {
 	case <-timer.C:
 		i.Logger(`timeout reached: ` + i.Timeout.String())
 	}
+	fmt.Println(i.Response)
 }
 
 func (i *IPCheck) Start() {
