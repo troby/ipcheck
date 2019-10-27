@@ -1,0 +1,11 @@
+quick start:
+func main() {
+        var q bool
+        flag.BoolVar(&q, "q", false, "only output ip")
+        flag.Parse()
+
+        i := ipcheck.NewIPCheck(q)
+        i.Start()
+        i.Wait()
+        fmt.Println(i.Response)
+}
