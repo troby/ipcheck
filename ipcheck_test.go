@@ -1,10 +1,14 @@
 package ipcheck
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+)
 
 func TestIPCheck(t *testing.T) {
 	i := NewIPCheck(false)
+	i.Logger(`testing logger output`)
 	i.Start()
 	i.Wait()
-	i.Logger(`testing logger output`)
+	fmt.Printf("IPCheck returned: %s\n", i.Response)
 }

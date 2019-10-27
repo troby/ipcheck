@@ -1,7 +1,6 @@
 package ipcheck
 
 import (
-	"fmt"
 	"log"
 	"sync"
 	"time"
@@ -34,9 +33,10 @@ func (i *IPCheck) Wait() {
 	case i.Response = <-i.ResponseChannel:
 		return
 	case <-timer.C:
+		i.Mutex.Lock()
 		i.Logger(`timeout reached: ` + i.Timeout.String())
+		i.Mutex.Unlock()
 	}
-	fmt.Println(i.Response)
 }
 
 func (i *IPCheck) Start() {
@@ -44,7 +44,9 @@ func (i *IPCheck) Start() {
 	go func() {
 		wtf, err := WTFMyIP()
 		if err != nil {
+			i.Mutex.Lock()
 			i.Logger(`wtf lookup failed: ` + err.Error())
+			i.Mutex.Unlock()
 		}
 		if !i.Quiet {
 			i.Mutex.Lock()
@@ -61,7 +63,9 @@ func (i *IPCheck) Start() {
 	go func() {
 		addr, err := IfconfigCoMyIP()
 		if err != nil {
+			i.Mutex.Lock()
 			i.Logger(`ifconfig lookup failed: ` + err.Error())
+			i.Mutex.Unlock()
 		}
 		i.ResponseChannel <- strings.TrimSpace(addr)
 	}()
